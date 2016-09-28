@@ -90,4 +90,9 @@ public class HealthMeTest {
         service.walk(1300);
         Assert.assertEquals(200,service.leftToWalkToDay());
     }
+
+    @Test
+    public void showYesterdayCaloriesAmount(){
+
+    }
 }
