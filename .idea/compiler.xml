@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="FitnessApp" />
         <module name="MockitoExample" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="FitnessApp" target="1.8" />
       <module name="MockitoExample" target="1.8" />
     </bytecodeTargetLevel>
   </component>
