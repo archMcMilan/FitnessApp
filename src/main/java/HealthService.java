@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,29 +7,24 @@ import java.util.Map;
  * Created by Artem_Pryzhkov on 9/28/2016.
  */
 public class HealthService {
-    //private Day day;
     private int waterPerDay;
-    private int mealPerDay;
+    private int caloriesPerDay;
     private int stepsPerDay;
     private Map<LocalDate, Day> history = new HashMap<>();
 
     public HealthService() {
-        this.mealPerDay = 2500;
+        this.caloriesPerDay = 2500;
         this.waterPerDay = 3500;
         this.stepsPerDay = 2000;
-        //history.put(LocalDate.now(), new Day());
     }
 
-//    public LocalTime getTime() {
-//        return time;
-//    }
 
     public Day getDay(LocalDate date) {
         return history.get(date);
     }
 
-    public int getMealPerDay() {
-        return mealPerDay;
+    public int getCaloriesPerDay() {
+        return caloriesPerDay;
     }
 
     public int getWaterPerDay() {
@@ -61,7 +57,7 @@ public class HealthService {
     }
 
     public int leftToEatThatDay(LocalDate date) {
-        return mealPerDay - history.get(date).getEaten();
+        return caloriesPerDay - history.get(date).getEaten();
     }
 
     public int leftToDrinkThatDay(LocalDate date) {
@@ -84,18 +80,6 @@ public class HealthService {
         return false;
 
     }
-//
-//    public Day getAverage(LocalDate startDate, LocalDate endDate) {
-//        Day averageDay=new Day();
-//        LocalDate currentDate=startDate;
-//
-//        while(!currentDate.equals(endDate)){
-//
-//            averageDay.drink(history.get(currentDate).getDrunk());
-//            averageDay.eat(history.get(currentDate).getEaten());
-//            averageDay.walk(history.get(currentDate).getWalked());
-//        }
-//    }
 
     public int getAverageDrinkLiters(LocalDate startDate, LocalDate endDate) {
         return getAverage(startDate,endDate).getDrunk();
@@ -128,4 +112,43 @@ public class HealthService {
         averageDay.walk(stepsAmount/daysAmount);
         return averageDay;
     }
+
+    public int leftToDrinkInPercent(LocalDate date) {
+        return (int) (((double)history.get(date).getDrunk()/waterPerDay)*100);
+    }
+
+    public int leftToEatInPercent(LocalDate date) {
+        return (int) (((double)history.get(date).getEaten()/ caloriesPerDay)*100);
+    }
+
+    public int leftToWalkInPercent(LocalDate date) {
+        return (int) (((double)history.get(date).getWalked()/ stepsPerDay)*100);
+    }
+
+    public Day getMedianDay(LocalDate startDate, LocalDate endDate) {
+        int daysAmountInPeriod=Period.between(startDate,endDate).getDays()+1;
+        if(daysAmountInPeriod%2==0){
+            Day leftMedianDay=history.get(startDate.plusDays(daysAmountInPeriod/2-1));
+            Day rightMedianDay=history.get(startDate.plusDays(daysAmountInPeriod/2));
+            Day returnDay=new Day();
+            returnDay.drink((leftMedianDay.getDrunk()+rightMedianDay.getDrunk())/2);
+            returnDay.eat((leftMedianDay.getEaten()+rightMedianDay.getEaten())/2);
+            returnDay.walk((leftMedianDay.getWalked()+rightMedianDay.getWalked())/2);
+            return returnDay;
+        }else{
+            Day medianDay=history.get(startDate.plusDays(daysAmountInPeriod/2));
+            return medianDay;
+        }
+    }
+
+    public int getMedianDrinkLiters(LocalDate startDate,LocalDate endDate){
+        return getMedianDay(startDate,endDate).getDrunk();
+    }
+    public int getMedianEatCalories(LocalDate startDate,LocalDate endDate){
+        return getMedianDay(startDate,endDate).getEaten();
+    }
+    public int getMedianWalkedSteps(LocalDate startDate,LocalDate endDate){
+        return getMedianDay(startDate,endDate).getWalked();
+    }
+
 }

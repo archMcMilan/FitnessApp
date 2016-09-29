@@ -38,7 +38,7 @@ public class HealthMeTest {
     @Test
     public void haveBreakfast(){
         day.eat(1000);
-        Assert.assertEquals(1500,service.getMealPerDay()- day.getEaten());
+        Assert.assertEquals(1500,service.getCaloriesPerDay()- day.getEaten());
     }
 
     @Test
@@ -98,25 +98,11 @@ public class HealthMeTest {
     }
 
     @Test
-    public void getYesterday(){
+    public void getYesterdayCalories(){
         LocalDate yesterday=LocalDate.of(2016,9,28);
         service.eat(2000,yesterday);
         Assert.assertEquals(2000,service.getDay(yesterday).getEaten());
     }
-
-//    @Test
-//    public void getAverage(){
-//        for(int day=23;day<30;day++){
-//            LocalDate date=LocalDate.of(2016,9,day);
-//            double amountWater=2.0 + (double) day/20;
-//            int amountCalories= 2000+day;
-//            int amountSteps=1500+day;
-//            service.drink(amountWater,date);
-//            service.eat(amountCalories,date);
-//            service.walk(amountSteps,date);
-//        }
-//        //Assert.assertEquals(service.getAverage());
-//    }
 
     @Test
     public void getAverageWaterLitersPerWeek(){
@@ -143,5 +129,60 @@ public class HealthMeTest {
             service.walk(2001+day,date);
         }
         Assert.assertEquals(2027,service.getAverageSteps(LocalDate.of(2016,9,23),LocalDate.of(2016,9,29)));
+    }
+
+    @Test
+    public void leftToDrinkTodayInPercent(){
+        service.drink(500,LocalDate.now());
+        service.drink(1500,LocalDate.now());
+        Assert.assertEquals(57,service.leftToDrinkInPercent(LocalDate.now()));
+    }
+
+    @Test
+    public void leftToEatTodayInPercent(){
+        service.eat(1000,LocalDate.now());
+        service.eat(500,LocalDate.now());
+        Assert.assertEquals(60,service.leftToEatInPercent(LocalDate.now()));
+    }
+
+    @Test
+    public void leftToWalkTodayInPercent(){
+        service.walk(500,LocalDate.now());
+        service.walk(1300,LocalDate.now());
+        Assert.assertEquals(90,service.leftToWalkInPercent(LocalDate.now()));
+    }
+
+
+    @Test
+    public void getMedianWaterLitersPerPairedDaysAmount(){
+        for(int day=20;day<23;day++){
+            LocalDate date=LocalDate.of(2016,9,day);
+            service.drink(900+day*2,date);
+            service.eat(1000+day,date);
+            service.walk(500+day*3,date);
+        }
+        service.drink(4000,LocalDate.of(2016,9,23));
+        service.eat(4000,LocalDate.of(2016,9,23));
+        service.walk(0,LocalDate.of(2016,9,23));
+        Assert.assertEquals(943,service.getMedianDrinkLiters(LocalDate.of(2016,9,20),LocalDate.of(2016,9,23)));
+        Assert.assertEquals(1021,service.getMedianEatCalories(LocalDate.of(2016,9,20),LocalDate.of(2016,9,23)));
+        Assert.assertEquals(564,service.getMedianWalkedSteps(LocalDate.of(2016,9,20),LocalDate.of(2016,9,23)));
+    }
+
+
+    @Test
+    public void getMedianWaterLitersPerUnpairedDaysAmount(){
+        for(int day=21;day<23;day++){
+            LocalDate date=LocalDate.of(2016,9,day);
+            service.drink(900+day*2,date);
+            service.eat(1000+day,date);
+            service.walk(500+day*3,date);
+        }
+        service.drink(4000,LocalDate.of(2016,9,23));
+        service.eat(4000,LocalDate.of(2016,9,23));
+        service.walk(0,LocalDate.of(2016,9,23));
+        Assert.assertEquals(944,service.getMedianDrinkLiters(LocalDate.of(2016,9,21),LocalDate.of(2016,9,23)));
+        Assert.assertEquals(1022,service.getMedianEatCalories(LocalDate.of(2016,9,21),LocalDate.of(2016,9,23)));
+        Assert.assertEquals(566,service.getMedianWalkedSteps(LocalDate.of(2016,9,21),LocalDate.of(2016,9,23)));
     }
 }
