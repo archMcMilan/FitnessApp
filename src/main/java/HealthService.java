@@ -3,9 +3,6 @@ import java.time.Period;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Artem_Pryzhkov on 9/28/2016.
- */
 public class HealthService {
     private int waterPerDay;
     private int caloriesPerDay;
