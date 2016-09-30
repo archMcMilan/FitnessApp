@@ -11,7 +11,7 @@ public class HealthMeTest {
     @Before
     public void setUp(){
         day =new Day();
-        service=new HealthService();
+        service=new HealthService(3500,2500,2000);
     }
 
     @Test
@@ -151,8 +151,8 @@ public class HealthMeTest {
 
 
     @Test
-    public void getMedianWaterLitersPerPairedDaysAmount(){
-        for(int day=20;day<24;day++){
+    public void getMedianPerPairedDaysAmount(){
+        for(int day=20;day<26;day++){
             LocalDate date=LocalDate.of(2016,9,day);
             service.drink(900+day*2,date);
             service.eat(1000+day,date);
@@ -161,15 +161,15 @@ public class HealthMeTest {
         service.drink(4000,LocalDate.of(2016,9,22));
         service.eat(4000,LocalDate.of(2016,9,22));
         service.walk(0,LocalDate.of(2016,9,22));
-        Assert.assertEquals(2943,service.getMedianDrinkLiters(LocalDate.of(2016,9,20),LocalDate.of(2016,9,23)));
-        Assert.assertEquals(3021,service.getMedianEatCalories(LocalDate.of(2016,9,20),LocalDate.of(2016,9,23)));
-        Assert.assertEquals(564,service.getMedianWalkedSteps(LocalDate.of(2016,9,20),LocalDate.of(2016,9,23)));
+        Assert.assertEquals(947,service.getMedianDrinkLiters(LocalDate.of(2016,9,20),LocalDate.of(2016,9,25)));
+        Assert.assertEquals(1023,service.getMedianEatCalories(LocalDate.of(2016,9,20),LocalDate.of(2016,9,25)));
+        Assert.assertEquals(567,service.getMedianWalkedSteps(LocalDate.of(2016,9,20),LocalDate.of(2016,9,25)));
     }
 
 
     @Test
-    public void getMedianWaterLitersPerUnpairedDaysAmount(){
-        for(int day=21;day<24;day++){
+    public void getMedianPerUnpairedDaysAmount(){
+        for(int day=21;day<26;day++){
             LocalDate date=LocalDate.of(2016,9,day);
             service.drink(900+day*2,date);
             service.eat(1000+day,date);
@@ -178,8 +178,8 @@ public class HealthMeTest {
         service.drink(4000,LocalDate.of(2016,9,22));
         service.eat(4000,LocalDate.of(2016,9,22));
         service.walk(0,LocalDate.of(2016,9,22));
-        Assert.assertEquals(4944,service.getMedianDrinkLiters(LocalDate.of(2016,9,21),LocalDate.of(2016,9,23)));
-        Assert.assertEquals(5022,service.getMedianEatCalories(LocalDate.of(2016,9,21),LocalDate.of(2016,9,23)));
-        Assert.assertEquals(566,service.getMedianWalkedSteps(LocalDate.of(2016,9,21),LocalDate.of(2016,9,23)));
+        Assert.assertEquals(948,service.getMedianDrinkLiters(LocalDate.of(2016,9,21),LocalDate.of(2016,9,25)));
+        Assert.assertEquals(1024,service.getMedianEatCalories(LocalDate.of(2016,9,21),LocalDate.of(2016,9,25)));
+        Assert.assertEquals(569,service.getMedianWalkedSteps(LocalDate.of(2016,9,21),LocalDate.of(2016,9,25)));
     }
 }
